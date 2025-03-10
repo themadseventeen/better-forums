@@ -145,7 +145,6 @@
     }
 
     function syncTheme() {
-        console.log("Syncing...");
         if (browserTheme() !== forumTheme()) {
             switchTheme();
         }
