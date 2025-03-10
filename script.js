@@ -121,12 +121,69 @@
 
     }
 
+    function forumTheme() {
+        if(document.querySelector('html').classList.contains("dark"))
+            return "dark";
+        if(document.querySelector('html').classList.contains("light"))
+            return "light"
+    }
+
+    function browserTheme() {
+        if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+            return "dark";
+        }
+        else {
+            return "light";
+        }
+    }
+
+    function switchTheme() {
+        const _button = document.querySelector('.color-scheme-toggler');
+        if (_button) {
+          _button.click();
+        }
+    }
+
+    function syncTheme() {
+        console.log("Syncing...");
+        if (browserTheme() !== forumTheme()) {
+            switchTheme();
+        }
+    }
+
+
+    function waitForElm(selector) {
+        return new Promise(resolve => {
+            if (document.querySelector(selector)) {
+                return resolve(document.querySelector(selector));
+            }
+
+            const observer = new MutationObserver(mutations => {
+                if (document.querySelector(selector)) {
+                    observer.disconnect();
+                    resolve(document.querySelector(selector));
+                }
+            });
+
+            observer.observe(document.body, {
+                childList: true,
+                subtree: true
+            });
+        });
+    }
+
     forAllPosts();
     observePage();
+
+    waitForElm('.color-scheme-toggler').then((elm) => {
+        syncTheme();
+    });
 
     const postObserver = new MutationObserver(forAllPosts);
     const pageObserver = new MutationObserver(observePage);
     postObserver.observe(document.body, { childList: true, subtree: true });
     pageObserver.observe(document.body, {childList: true, subtree: true});
+
+    window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', e => syncTheme());
 
 })();
