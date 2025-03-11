@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Better Forums
 // @namespace    https://forum.warthunder.com
-// @version      1.1.2
+// @version      1.1.3
 // @description  Small improvements to the War Thunder forums
 // @author       themadseventeen
 // @match        https://forum.warthunder.com/*
@@ -185,7 +185,7 @@
             if(children[i].classList.contains("theme-override"))
                 return;
         }
-        header.insertBefore(createThemeOverrideButton(), header.firstChild);
+        header.appendChild(createThemeOverrideButton());
     }
 
     function syncTheme() {
