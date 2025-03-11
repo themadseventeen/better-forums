@@ -6,6 +6,8 @@
 // @author       themadseventeen
 // @match        https://forum.warthunder.com/*
 // @grant        GM_addStyle
+// @grant        GM_getValue
+// @grant        GM_setValue
 // ==/UserScript==
 
 
@@ -144,10 +146,46 @@
         }
     }
 
-    function syncTheme() {
-        if (browserTheme() !== forumTheme()) {
-            switchTheme();
+    function createThemeOverrideButton() {
+        const buttonLI = document.createElement("li");
+
+        const overrideButton = document.createElement("button");
+        overrideButton.classList.add("icon", "btn-flat");
+        if (GM_getValue("followTheme", true)) {
+            overrideButton.textContent = "A";
         }
+        else {
+            overrideButton.textContent = "M";
+        }
+
+        overrideButton.addEventListener("click", function() {
+            let followTheme = GM_getValue("followTheme", true);
+            followTheme = !followTheme;
+            if (followTheme) {
+                this.textContent = "A";
+            }
+            else {
+                this.textContent = "M";
+            }
+            GM_setValue("followTheme", followTheme);
+        });
+
+        buttonLI.appendChild(overrideButton);
+
+        return buttonLI;
+    }
+
+    function headerButtonsReady(elm) {
+        elm.insertBefore(createThemeOverrideButton(), elm.firstChild);
+    }
+
+    function syncTheme() {
+        if (GM_getValue("followTheme", true) === true) {
+            if (browserTheme() !== forumTheme()) {
+                switchTheme();
+            }
+        }
+
     }
 
 
@@ -176,6 +214,10 @@
 
     waitForElm('.color-scheme-toggler').then((elm) => {
         syncTheme();
+    });
+
+    waitForElm('.d-header-icons').then((elm) => {
+        headerButtonsReady(elm);
     });
 
     const postObserver = new MutationObserver(forAllPosts);
