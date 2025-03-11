@@ -6,6 +6,7 @@ User script containing improvements for War Thunder's official forums
 * Highlighting replies, quotes and mentions
 * Removes the giant red "PLAY" button
 * Sync dark mode with the browser/system
+* Theme sync override ("M" is for manual, "A" is for automatic theme)
 * Respects the forum theme
 * Minor CSS tweaks
 
