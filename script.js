@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Better Forums
 // @namespace    https://forum.warthunder.com
-// @version      1.1.1
+// @version      1.1.2
 // @description  Small improvements to the War Thunder forums
 // @author       themadseventeen
 // @match        https://forum.warthunder.com/*
@@ -112,6 +112,7 @@
     function observePage() {
         fixTopicMap();
         removePlayButton();
+        headerButtonsReady();
     }
 
     function forAllPosts() {
@@ -148,6 +149,7 @@
 
     function createThemeOverrideButton() {
         const buttonLI = document.createElement("li");
+        buttonLI.classList.add("theme-override");
 
         const overrideButton = document.createElement("button");
         overrideButton.classList.add("icon", "btn-flat");
@@ -175,8 +177,15 @@
         return buttonLI;
     }
 
-    function headerButtonsReady(elm) {
-        elm.insertBefore(createThemeOverrideButton(), elm.firstChild);
+    function headerButtonsReady() {
+        const header = document.querySelector(".d-header-icons");
+        if(!header) return;
+        var children = header.children;
+        for (var i = 0; i < children.length; i++) {
+            if(children[i].classList.contains("theme-override"))
+                return;
+        }
+        header.insertBefore(createThemeOverrideButton(), header.firstChild);
     }
 
     function syncTheme() {
@@ -216,8 +225,8 @@
         syncTheme();
     });
 
-    waitForElm('.d-header-icons').then((elm) => {
-        headerButtonsReady(elm);
+    waitForElm('.d-header-icons').then(() => {
+        headerButtonsReady();
     });
 
     const postObserver = new MutationObserver(forAllPosts);
