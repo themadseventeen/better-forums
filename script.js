@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Better Forums
 // @namespace    https://forum.warthunder.com
-// @version      1.2.0
+// @version      1.2.1
 // @description  Small improvements to the War Thunder forums
 // @author       themadseventeen
 // @match        https://forum.warthunder.com/*
@@ -25,7 +25,7 @@
         }
 
         .user-card .first-row .names span, .group-card .first-row .names span {
-            font-family: "Skyquake", sans-serif;
+            font-family: "Skyquake", "Roboto", sans-serif;
         }
 
 
