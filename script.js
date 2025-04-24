@@ -8,6 +8,7 @@
 // @grant        GM_addStyle
 // @grant        GM_getValue
 // @grant        GM_setValue
+// @connect      themadseventeen.github.io
 // ==/UserScript==
 
 
@@ -15,6 +16,19 @@
     'use strict';
 
     GM_addStyle(`
+        @font-face {
+            font-family: Skyquake;
+            src: url('https://themadseventeen.github.io/better-forums-assets/fonts/symbols_skyquake_short.woff') format('woff');
+            font-weight: 400;
+            font-style: normal;
+            font-display: swap;
+        }
+
+        .user-card .first-row .names span, .group-card .first-row .names span {
+            font-family: "Skyquake", sans-serif;
+        }
+
+
         html.dark {
             .current-user-post>article .row {
                 background-color: #331a1a;
