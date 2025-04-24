@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Better Forums
 // @namespace    https://forum.warthunder.com
-// @version      1.1.3
+// @version      1.2.0
 // @description  Small improvements to the War Thunder forums
 // @author       themadseventeen
 // @match        https://forum.warthunder.com/*
