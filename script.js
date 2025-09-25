@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Better Forums
 // @namespace    https://forum.warthunder.com
-// @version      1.4.2
+// @version      1.4.3
 // @author       themadseventeen
 // @description  Small improvements to the War Thunder forums
 // @icon         https://warthunder.com/i/favicons/mstile-144x144.png
@@ -12139,7 +12139,6 @@
   }
   async function getGaijinID(post) {
     let temp = post.querySelector("article").dataset["userId"];
-    console.log("temp " + temp);
     let forumID;
     if (temp)
       forumID = parseInt(temp);
@@ -12147,12 +12146,10 @@
       return;
     }
     let gaijinID = await getGaijinIDFromForumID(forumID);
-    console.log("gaijinID " + gaijinID);
     if (gaijinID !== void 0) {
       return gaijinID;
     } else {
       const link = post?.querySelector("a.trigger-user-card")?.href + ".json";
-      console.log(link);
       if (link === null)
         return;
       const id = await getGaijinIDFromLink(link);
