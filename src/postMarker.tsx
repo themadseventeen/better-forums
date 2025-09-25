@@ -1,4 +1,5 @@
 import { useEffect } from 'react';
+import { getGaijinID } from './utils';
 
 function usePostObserver() {
     useEffect(() => {
@@ -7,6 +8,7 @@ function usePostObserver() {
                 markReplies(post);
                 markQuotes(post);
                 markMentions(post);
+                addButton(post);
             });
         }
 
@@ -28,13 +30,13 @@ export default function PostMarker() {
 }
 
 function getMyUsername(): string {
-  return (
-    document
-      .querySelector<HTMLImageElement>(
-        '#current-user > button:nth-child(1) > div:nth-child(1) > img:nth-child(1)'
-      )
-      ?.title ?? ''
-  );
+    return (
+        document
+            .querySelector<HTMLImageElement>(
+                '#current-user > button:nth-child(1) > div:nth-child(1) > img:nth-child(1)'
+            )
+            ?.title ?? ''
+    );
 }
 
 function markReplies(post: HTMLElement) {
@@ -62,4 +64,21 @@ function markMentions(post: any) {
             mention.classList.add('mark-mention');
         }
     });
+}
+
+export async function addButton(post: HTMLElement) {
+    if (post.querySelector(".statshark-button")) return;
+
+    const btn = document.createElement("button");
+    btn.className = "statshark-button widget-button btn-flat reply create fade-out btn-icon-text";
+    btn.textContent = "Statshark";
+
+    btn.addEventListener("click", async () => {
+        const id = await getGaijinID(post);
+        console.log(id);
+        window.open("https://statshark.net/player/" + id, "_blank");
+    });
+
+    const footer = post.querySelector(".post-controls .actions") || post;
+    footer.appendChild(btn);
 }
