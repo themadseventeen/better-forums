@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Better Forums
 // @namespace    https://forum.warthunder.com
-// @version      1.3.0
+// @version      1.3.1
 // @author       themadseventeen
 // @description  Small improvements to the War Thunder forums
 // @icon         https://vitejs.dev/logo.svg
@@ -12318,8 +12318,21 @@ jsxRuntimeExports.jsx(
     );
   }
   function NavSettings() {
-    const nav = document.querySelector('[role="navigation"] ul');
-    return nav ? ReactDOM.createPortal( jsxRuntimeExports.jsx("li", { children: jsxRuntimeExports.jsx(SettingsButton, {}) }), nav) : null;
+    const [nav, setNav] = reactExports.useState(null);
+    reactExports.useEffect(() => {
+      const navEl = document.querySelector('[role="navigation"] ul');
+      if (navEl) setNav(navEl);
+      const observer = new MutationObserver(() => {
+        const el = document.querySelector('[role="navigation"] ul');
+        if (el && el !== nav) {
+          setNav(el);
+        }
+      });
+      observer.observe(document.body, { childList: true, subtree: true });
+      return () => observer.disconnect();
+    }, [nav]);
+    if (!nav) return null;
+    return ReactDOM.createPortal( jsxRuntimeExports.jsx("li", { children: jsxRuntimeExports.jsx(SettingsButton, {}) }), nav);
   }
   _GM_addStyle(css);
   console.log("Loaded!");
