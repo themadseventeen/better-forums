@@ -1,9 +1,7 @@
 // ==UserScript==
 // @name         Better Forums
 // @namespace    https://forum.warthunder.com
-
 // @version      1.4.0
-
 // @author       themadseventeen
 // @description  Small improvements to the War Thunder forums
 // @icon         https://warthunder.com/i/favicons/mstile-144x144.png
@@ -18,9 +16,7 @@
 // ==/UserScript==
 
 (function () {
-
   'use strict';
-
 
   function getDefaultExportFromCjs(x) {
     return x && x.__esModule && Object.prototype.hasOwnProperty.call(x, "default") ? x["default"] : x;
