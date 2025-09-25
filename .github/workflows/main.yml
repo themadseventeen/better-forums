@@ -2,7 +2,7 @@ name: Build userscript
 
 on:
   push:
-    branches: [ dev ]
+    branches: [ dev, master ]
   workflow_dispatch:
 
 jobs:
