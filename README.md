@@ -9,7 +9,7 @@ User script containing improvements for War Thunder's official forums
 * Theme sync override ("M" is for manual, "A" is for automatic theme)
 * Respects the forum theme
 * Minor CSS tweaks
-* Statshark integration
+* Edit custom colors
 
 
 ## How to install
