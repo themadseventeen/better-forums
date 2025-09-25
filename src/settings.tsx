@@ -1,13 +1,18 @@
 import React, { useState, useEffect } from "react";
 import ReactDOM from "react-dom/client";
 import { GM_getValue, GM_setValue, GM_addValueChangeListener, GM_removeValueChangeListener } from '$';
-import { syncTheme } from "./theme";
+import { calculateColors, defaultColors, syncTheme } from "./theme";
 import { removePlayButton } from "./tweaks";
 
 function SettingsForm() {
     const [darkMode, setDarkMode] = useState(false);
     const [removeButton, setRemoveButton] = useState(() => GM_getValue("removeButton", false));
     const [theme, setTheme] = useState(() => GM_getValue("currentTheme", "dark"));
+
+    const [mainLight, setMainLight] = useState(() => GM_getValue("mainColorLight"));
+    const [mainDark, setMainDark] = useState(() => GM_getValue("mainColorDark"));
+    const [replyLight, setReplyLight] = useState(() => GM_getValue("replyColorLight"));
+    const [replyDark, setReplyDark] = useState(() => GM_getValue("replyColorDark"));
 
     useEffect(() => {
         setDarkMode(GM_getValue("followTheme", false));
@@ -26,10 +31,25 @@ function SettingsForm() {
     const save = () => {
         GM_setValue("followTheme", darkMode);
         syncTheme();
-        
+
         GM_setValue("removeButton", removeButton);
         removePlayButton();
+
+        GM_setValue("mainColorLight", mainLight);
+        GM_setValue("mainColorDark", mainDark);
+        GM_setValue("replyColorLight", replyLight);
+        GM_setValue("replyColorDark", replyDark);
+        calculateColors();
     };
+
+    const resetColors = () => {
+        defaultColors();
+        calculateColors();
+        setMainLight(GM_getValue("mainColorLight"));
+        setMainDark(GM_getValue("mainColorDark"));
+        setReplyLight(GM_getValue("replyColorLight"));
+        setReplyDark(GM_getValue("replyColorDark"));
+    }
 
     return (
         <div
@@ -63,6 +83,55 @@ function SettingsForm() {
                 Remove "PLAY" button
             </label>
 
+
+            <label>
+                <input
+                    type="color"
+                    value={mainLight}
+                    id="baseColorDark"
+                    onChange={e => setMainLight(e.target.value)}
+                />{" "}
+                Your posts light color
+            </label>
+            <label>
+                <input
+                    type="color"
+                    value={mainDark}
+                    id="replyColorLight"
+                    onChange={e => setMainDark(e.target.value)}
+                />{" "}
+                Your posts dark color
+            </label>
+            <label>
+                <input
+                    type="color"
+                    value={replyLight}
+                    id="replyColorDark"
+                    onChange={e => setReplyLight(e.target.value)}
+                />{" "}
+                Replies/mentions/quotes light color
+            </label>
+            <label>
+                <input
+                    type="color"
+                    value={replyDark}
+                    id="replyColorDark"
+                    onChange={e => setReplyDark(e.target.value)}
+                />{" "}
+                Replies/mentions/quotes dark color
+            </label>
+            <button
+                style={{
+                    backgroundColor: theme === "dark" ? "#b30000" : "#ff5454",
+                    color: theme === "dark" ? "#b9b9b9ff" : "#383838",
+                    border: "none",
+                    padding: "8px 16px",
+                    cursor: "pointer",
+                }}
+                onClick={resetColors}
+            >
+                Reset colors
+            </button>
             <button
                 style={{
                     backgroundColor: theme === "dark" ? "#546E7A" : "#e9e9e9",

@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import PostMarker from './postMarker'
-import Theme from './theme';
+import Theme, { calculateColors } from './theme';
 import Tweaks from './tweaks';
 
 import css from './index.css?inline';
@@ -10,6 +10,8 @@ import NavSettings from './navSettings';
 GM_addStyle(css);
 
 console.log("Loaded!");
+
+calculateColors();
 
 ReactDOM.createRoot(
     (() => {

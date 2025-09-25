@@ -13,42 +13,38 @@
 
 :root {
     /* default values */
-    --current-post-bg: #b2f591;
-    --mark-reply-bg: #ffbe7e;
-    --quote-bg: #ffbe7e;
-    --mention-color: #af7615;
+    --mainColor: #b2f591;
+    --replyColor: #ffbe7e;
 }
 
 html.dark {
-    --current-post-bg: #005e40;
-    --mark-reply-bg: #422e1a;
-    --quote-bg: #422e1a;
-    --mention-color: #af7615;
+    --mainColor: #005e40;
+    --replyColor: #422e1a;
 }
 
 .current-user-post>article .row {
-    background-color: var(--current-post-bg);
-    border: 2px solid var(--current-post-border);
+    background-color: var(--mainColor);
+    border: 2px solid var(--mainBorder);
 }
 
 .mark-reply>article .row {
-    background-color: var(--mark-reply-bg);
-    border: 2px solid var(--mark-reply-border);
+    background-color: var(--replyColor);
+    border: 2px solid var(--replyBorder);
 }
 
 article .row .topic-body aside.quote.mark-quote {
-    background-color: var(--quote-bg);
+    background-color: var(--replyColor);
     border-radius: 6px;
     overflow: hidden;
     position: relative;
 }
 
 article .row .topic-body a.mark-mention {
-    color: var(--mention-color);
+    /* color: var(--replyBorder); */
     transition: color ease .3s, fill ease .3s, background-color ease .3s;
 }
 
 a.mention.mark-mention,
 a.mention-group {
-    background: var(--quote-bg);
+    background: var(--replyColor);
 }
