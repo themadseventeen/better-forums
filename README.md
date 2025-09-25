@@ -7,6 +7,7 @@ User script containing improvements for War Thunder's official forums
 * Removes the giant red "PLAY" button
 * Sync dark mode with the browser/system
 * Theme sync override ("M" is for manual, "A" is for automatic theme)
+* Fixes clan tags
 * Respects the forum theme
 * Minor CSS tweaks
 * Edit custom colors
