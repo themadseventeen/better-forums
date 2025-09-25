@@ -13,7 +13,6 @@ async function getGaijinIDFromLink(link: string) {
 
 export async function getGaijinID(post: any) {
     let temp = post.querySelector('article').dataset['userId']
-    console.log("temp " + temp);
     let forumID: number;
     if (temp)
         forumID = parseInt(temp);
@@ -21,13 +20,11 @@ export async function getGaijinID(post: any) {
         return;
     }
     let gaijinID = await getGaijinIDFromForumID(forumID);
-    console.log("gaijinID " + gaijinID);
     if (gaijinID !== undefined) {
         return gaijinID;
     }
     else {
         const link = post?.querySelector("a.trigger-user-card")?.href + ".json";
-        console.log(link);
         if (link === null)
             return;
         const id = await getGaijinIDFromLink(link);
