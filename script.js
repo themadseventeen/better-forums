@@ -12063,6 +12063,103 @@
   }
   var clientExports = requireClient();
   const ReactDOM$1 = getDefaultExportFromCjs(clientExports);
+  const DB_NAME = "better-forums";
+  async function openDB(storeName) {
+    return new Promise((resolve, reject) => {
+      const req = indexedDB.open(DB_NAME);
+      req.onupgradeneeded = () => {
+        const db = req.result;
+        if (!db.objectStoreNames.contains(storeName)) {
+          db.createObjectStore(storeName);
+        }
+      };
+      req.onsuccess = () => {
+        const db = req.result;
+        if (!db.objectStoreNames.contains(storeName)) {
+          db.close();
+          const upgrade = indexedDB.open(DB_NAME, db.version + 1);
+          upgrade.onupgradeneeded = () => {
+            upgrade.result.createObjectStore(storeName);
+          };
+          upgrade.onsuccess = () => resolve(upgrade.result);
+          upgrade.onerror = () => reject(upgrade.error);
+        } else {
+          resolve(db);
+        }
+      };
+      req.onerror = () => reject(req.error);
+    });
+  }
+  async function getFromCache(cacheName, key) {
+    const db = await openDB(cacheName);
+    return new Promise((resolve, reject) => {
+      const tx = db.transaction(cacheName, "readonly");
+      const req = tx.objectStore(cacheName).get(key);
+      req.onsuccess = () => resolve(req.result);
+      req.onerror = () => reject(req.error);
+    });
+  }
+  async function putInCache(cacheName, key, value) {
+    const db = await openDB(cacheName);
+    return new Promise((resolve, reject) => {
+      const tx = db.transaction(cacheName, "readwrite");
+      tx.objectStore(cacheName).put(value, key);
+      tx.oncomplete = () => resolve();
+      tx.onerror = () => reject(tx.error);
+    });
+  }
+  const inflight = new Map();
+  async function fetchCached(cacheName, url, key = url) {
+    const inflightKey = `${cacheName}:${key}`;
+    if (inflight.has(inflightKey)) return inflight.get(inflightKey);
+    const task = (async () => {
+      const cached = await getFromCache(cacheName, key);
+      if (cached !== void 0) return cached;
+      const resp = await fetch(url);
+      if (!resp.ok) throw new Error(`Request failed: ${resp.status}`);
+      const data = await resp.json();
+      await putInCache(cacheName, key, data);
+      return data;
+    })();
+    inflight.set(inflightKey, task);
+    try {
+      return await task;
+    } finally {
+      inflight.delete(inflightKey);
+    }
+  }
+  async function getGaijinIDFromForumID(id) {
+    const gaijinID = await getFromCache("id-map", id.toString());
+    return gaijinID;
+  }
+  async function getGaijinIDFromLink(link) {
+    const userData = await fetchCached("users", link);
+    const gaijinID = userData["user"]["custom_fields"]["gaijin_id"];
+    return gaijinID;
+  }
+  async function getGaijinID(post) {
+    let temp = post.querySelector("article").dataset["userId"];
+    console.log("temp " + temp);
+    let forumID;
+    if (temp)
+      forumID = parseInt(temp);
+    else {
+      return;
+    }
+    let gaijinID = await getGaijinIDFromForumID(forumID);
+    console.log("gaijinID " + gaijinID);
+    if (gaijinID !== void 0) {
+      return gaijinID;
+    } else {
+      const link = post?.querySelector("a.trigger-user-card")?.href + ".json";
+      console.log(link);
+      if (link === null)
+        return;
+      const id = await getGaijinIDFromLink(link);
+      await putInCache("id-map", temp, id);
+      return id;
+    }
+  }
   function usePostObserver() {
     reactExports.useEffect(() => {
       function forAllPosts() {
@@ -12070,6 +12167,7 @@
           markReplies(post);
           markQuotes(post);
           markMentions(post);
+          addButton(post);
         });
       }
       forAllPosts();
@@ -12113,6 +12211,19 @@
         mention.classList.add("mark-mention");
       }
     });
+  }
+  async function addButton(post) {
+    if (post.querySelector(".statshark-button")) return;
+    const btn = document.createElement("button");
+    btn.className = "statshark-button widget-button btn-flat reply create fade-out btn-icon-text";
+    btn.textContent = "Statshark";
+    btn.addEventListener("click", async () => {
+      const id = await getGaijinID(post);
+      console.log(id);
+      window.open("https://statshark.net/player/" + id, "_blank");
+    });
+    const footer = post.querySelector(".post-controls .actions") || post;
+    footer.appendChild(btn);
   }
   var _GM_addStyle = (() => typeof GM_addStyle != "undefined" ? GM_addStyle : void 0)();
   var _GM_addValueChangeListener = (() => typeof GM_addValueChangeListener != "undefined" ? GM_addValueChangeListener : void 0)();
