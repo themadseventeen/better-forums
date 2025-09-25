@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Better Forums
 // @namespace    https://forum.warthunder.com
-// @version      1.4.1
+// @version      1.4.2
 // @author       themadseventeen
 // @description  Small improvements to the War Thunder forums
 // @icon         https://warthunder.com/i/favicons/mstile-144x144.png
@@ -12160,6 +12160,12 @@
       return id;
     }
   }
+  var _GM_addStyle = (() => typeof GM_addStyle != "undefined" ? GM_addStyle : void 0)();
+  var _GM_addValueChangeListener = (() => typeof GM_addValueChangeListener != "undefined" ? GM_addValueChangeListener : void 0)();
+  var _GM_deleteValues = (() => typeof GM_deleteValues != "undefined" ? GM_deleteValues : void 0)();
+  var _GM_getValue = (() => typeof GM_getValue != "undefined" ? GM_getValue : void 0)();
+  var _GM_removeValueChangeListener = (() => typeof GM_removeValueChangeListener != "undefined" ? GM_removeValueChangeListener : void 0)();
+  var _GM_setValue = (() => typeof GM_setValue != "undefined" ? GM_setValue : void 0)();
   function usePostObserver() {
     reactExports.useEffect(() => {
       function forAllPosts() {
@@ -12213,6 +12219,8 @@
     });
   }
   async function addButton(post) {
+    const addLinks = _GM_getValue("statshark", false);
+    if (!addLinks) return;
     if (post.querySelector(".statshark-button")) return;
     const btn = document.createElement("button");
     btn.className = "statshark-button widget-button btn-flat reply create fade-out btn-icon-text";
@@ -12225,12 +12233,6 @@
     const footer = post.querySelector(".post-controls .actions") || post;
     footer.appendChild(btn);
   }
-  var _GM_addStyle = (() => typeof GM_addStyle != "undefined" ? GM_addStyle : void 0)();
-  var _GM_addValueChangeListener = (() => typeof GM_addValueChangeListener != "undefined" ? GM_addValueChangeListener : void 0)();
-  var _GM_deleteValues = (() => typeof GM_deleteValues != "undefined" ? GM_deleteValues : void 0)();
-  var _GM_getValue = (() => typeof GM_getValue != "undefined" ? GM_getValue : void 0)();
-  var _GM_removeValueChangeListener = (() => typeof GM_removeValueChangeListener != "undefined" ? GM_removeValueChangeListener : void 0)();
-  var _GM_setValue = (() => typeof GM_setValue != "undefined" ? GM_setValue : void 0)();
   function lightenDarkenColor(hex, amount) {
     let col = parseInt(hex.slice(1), 16);
     let r = (col >> 16) + amount;
@@ -12358,6 +12360,7 @@
     const [mainDark, setMainDark] = reactExports.useState(() => _GM_getValue("mainColorDark"));
     const [replyLight, setReplyLight] = reactExports.useState(() => _GM_getValue("replyColorLight"));
     const [replyDark, setReplyDark] = reactExports.useState(() => _GM_getValue("replyColorDark"));
+    const [statshark, setStatshark] = reactExports.useState(() => _GM_getValue("statshark", false));
     reactExports.useEffect(() => {
       setDarkMode(_GM_getValue("followTheme", false));
     }, []);
@@ -12380,6 +12383,7 @@
       _GM_setValue("replyColorLight", replyLight);
       _GM_setValue("replyColorDark", replyDark);
       calculateColors();
+      _GM_setValue("statshark", statshark);
     };
     const resetColors = () => {
       defaultColors();
@@ -12427,6 +12431,18 @@ jsxRuntimeExports.jsx(
             ),
             " ",
             'Remove "PLAY" button'
+          ] }),
+jsxRuntimeExports.jsxs("label", { children: [
+jsxRuntimeExports.jsx(
+              "input",
+              {
+                type: "checkbox",
+                checked: statshark,
+                onChange: (e) => setStatshark(e.target.checked)
+              }
+            ),
+            " ",
+            "Add a link to Statshark to every post"
           ] }),
 jsxRuntimeExports.jsxs("label", { children: [
 jsxRuntimeExports.jsx(
