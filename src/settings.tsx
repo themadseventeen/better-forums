@@ -14,6 +14,8 @@ function SettingsForm() {
     const [replyLight, setReplyLight] = useState(() => GM_getValue("replyColorLight"));
     const [replyDark, setReplyDark] = useState(() => GM_getValue("replyColorDark"));
 
+    const [statshark, setStatshark] = useState(() => GM_getValue("statshark", false));
+
     useEffect(() => {
         setDarkMode(GM_getValue("followTheme", false));
     }, []);
@@ -40,6 +42,8 @@ function SettingsForm() {
         GM_setValue("replyColorLight", replyLight);
         GM_setValue("replyColorDark", replyDark);
         calculateColors();
+
+        GM_setValue("statshark", statshark);
     };
 
     const resetColors = () => {
@@ -81,6 +85,14 @@ function SettingsForm() {
                     onChange={e => setRemoveButton(e.target.checked)}
                 />{" "}
                 Remove "PLAY" button
+            </label>
+            <label>
+                <input
+                    type="checkbox"
+                    checked={statshark}
+                    onChange={e => setStatshark(e.target.checked)}
+                />{" "}
+                Add a link to Statshark to every post
             </label>
 
 

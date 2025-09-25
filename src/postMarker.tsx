@@ -1,5 +1,6 @@
 import { useEffect } from 'react';
 import { getGaijinID } from './utils';
+import { GM_getValue } from '$';
 
 function usePostObserver() {
     useEffect(() => {
@@ -67,6 +68,8 @@ function markMentions(post: any) {
 }
 
 export async function addButton(post: HTMLElement) {
+    const addLinks = GM_getValue("statshark", false);
+    if (!addLinks) return;
     if (post.querySelector(".statshark-button")) return;
 
     const btn = document.createElement("button");
