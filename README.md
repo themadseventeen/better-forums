@@ -10,6 +10,7 @@ User script containing improvements for War Thunder's official forums
 * Fixes clan tags
 * Respects the forum theme
 * Minor CSS tweaks
+* Edit custom colors
 
 
 ## How to install

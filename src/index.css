@@ -1,0 +1,50 @@
+@font-face {
+    font-family: Skyquake;
+    src: url('https://themadseventeen.github.io/better-forums-assets/fonts/symbols_skyquake_short.woff') format('woff');
+    font-weight: 400;
+    font-style: normal;
+    font-display: swap;
+}
+
+.user-card .first-row .names span,
+.group-card .first-row .names span {
+    font-family: "Skyquake", "Roboto", sans-serif;
+}
+
+:root {
+    /* default values */
+    --mainColor: #b2f591;
+    --replyColor: #ffbe7e;
+}
+
+html.dark {
+    --mainColor: #005e40;
+    --replyColor: #422e1a;
+}
+
+.current-user-post>article .row {
+    background-color: var(--mainColor);
+    border: 2px solid var(--mainBorder);
+}
+
+.mark-reply>article .row {
+    background-color: var(--replyColor);
+    border: 2px solid var(--replyBorder);
+}
+
+article .row .topic-body aside.quote.mark-quote {
+    background-color: var(--replyColor);
+    border-radius: 6px;
+    overflow: hidden;
+    position: relative;
+}
+
+article .row .topic-body a.mark-mention {
+    /* color: var(--replyBorder); */
+    transition: color ease .3s, fill ease .3s, background-color ease .3s;
+}
+
+a.mention.mark-mention,
+a.mention-group {
+    background: var(--replyColor);
+}
