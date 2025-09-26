@@ -1,10 +1,12 @@
 // ==UserScript==
 // @name         Better Forums
-// @namespace    https://forum.warthunder.com
-// @version      1.4.3
+// @namespace    themadseventeen.github.io
+// @version      1.4.4
 // @author       themadseventeen
 // @description  Small improvements to the War Thunder forums
 // @icon         https://warthunder.com/i/favicons/mstile-144x144.png
+// @downloadURL  https://raw.githubusercontent.com/themadseventeen/better-forums/refs/heads/master/script.js
+// @updateURL    https://raw.githubusercontent.com/themadseventeen/better-forums/refs/heads/master/script.js
 // @match        https://forum.warthunder.com/*
 // @connect      themadseventeen.github.io
 // @grant        GM_addStyle
