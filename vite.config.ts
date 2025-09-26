@@ -16,12 +16,15 @@ export default defineConfig({
         namespace: 'themadseventeen.github.io',
         updateURL: 'https://raw.githubusercontent.com/themadseventeen/better-forums/refs/heads/master/script.js',
         downloadURL: 'https://raw.githubusercontent.com/themadseventeen/better-forums/refs/heads/master/script.js',
+        homepage: 'https://github.com/themadseventeen/better-forums',
+        homepageURL: 'https://github.com/themadseventeen/better-forums',
+        supportURL: 'https://github.com/themadseventeen/better-forums/issues',
         author: 'themadseventeen',
         description: 'Small improvements to the War Thunder forums',
         match: ['https://forum.warthunder.com/*'],
         name: 'Better Forums',
         connect: 'themadseventeen.github.io',
-        version: '1.4.4'
+        version: '1.4.5'
       },
       build: {
         fileName: 'script.js',
