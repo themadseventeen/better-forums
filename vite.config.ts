@@ -13,13 +13,15 @@ export default defineConfig({
       entry: 'src/main.tsx',
       userscript: {
         icon: 'https://warthunder.com/i/favicons/mstile-144x144.png',
-        namespace: 'https://forum.warthunder.com',
+        namespace: 'themadseventeen.github.io',
+        updateURL: 'https://raw.githubusercontent.com/themadseventeen/better-forums/refs/heads/master/script.js',
+        downloadURL: 'https://raw.githubusercontent.com/themadseventeen/better-forums/refs/heads/master/script.js',
         author: 'themadseventeen',
         description: 'Small improvements to the War Thunder forums',
         match: ['https://forum.warthunder.com/*'],
         name: 'Better Forums',
         connect: 'themadseventeen.github.io',
-        version: '1.4.3'
+        version: '1.4.4'
       },
       build: {
         fileName: 'script.js',
