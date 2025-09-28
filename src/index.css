@@ -12,9 +12,25 @@
 }
 
 :root {
-    /* default values */
     --mainColor: #b2f591;
     --replyColor: #ffbe7e;
+}
+
+.statshark-button {
+    position: relative;
+    padding-right: 1em !important;
+}
+
+.statshark-button::after {
+    content: "open_in_new";
+    font-family: "Material Symbols Outlined";
+    font-weight: normal;
+    font-style: normal;
+    line-height: 1;
+    position: absolute;
+    top: 0 !important;
+    pointer-events: none;
+    color: var(--topic-control-btn-text);
 }
 
 html.dark {

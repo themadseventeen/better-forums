@@ -24,7 +24,7 @@ export default defineConfig({
         match: ['https://forum.warthunder.com/*'],
         name: 'Better Forums',
         connect: 'themadseventeen.github.io',
-        version: '1.4.5'
+        version: '1.4.6'
       },
       build: {
         fileName: 'script.js',
