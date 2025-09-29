@@ -1,6 +1,7 @@
 import { useEffect } from 'react';
 import { getGaijinID } from './utils';
 import { GM_getValue } from '$';
+import { revealHidden } from './reveal';
 
 function usePostObserver() {
     useEffect(() => {
