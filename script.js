@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Better Forums
 // @namespace    themadseventeen.github.io
-// @version      1.4.6
+// @version      1.5.0
 // @author       themadseventeen
 // @description  Small improvements to the War Thunder forums
 // @icon         https://warthunder.com/i/favicons/mstile-144x144.png
@@ -12176,6 +12176,7 @@
           markQuotes(post);
           markMentions(post);
           addButton(post);
+          revealHidden(post);
         });
       }
       forAllPosts();
