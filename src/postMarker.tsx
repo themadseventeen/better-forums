@@ -10,6 +10,7 @@ function usePostObserver() {
                 markQuotes(post);
                 markMentions(post);
                 addButton(post);
+                revealHidden(post);
             });
         }
 
