@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Better Forums
 // @namespace    themadseventeen.github.io
-// @version      1.5.1
+// @version      1.6.0
 // @author       themadseventeen
 // @description  Small improvements to the War Thunder forums
 // @icon         https://warthunder.com/i/favicons/mstile-144x144.png
@@ -12427,8 +12427,51 @@
       return () => observer.disconnect();
     }, []);
   }
+  function observeNavigation(onNavigate) {
+    let lastUrl = window.location.href;
+    const checkUrl = () => {
+      const currentUrl = window.location.href;
+      if (currentUrl === lastUrl) {
+        return;
+      }
+      lastUrl = currentUrl;
+      onNavigate(new URL(currentUrl));
+    };
+    const originalPushState = window.history.pushState;
+    const originalReplaceState = window.history.replaceState;
+    window.history.pushState = function(data, unused, url) {
+      const result = originalPushState.call(this, data, unused, url);
+      checkUrl();
+      return result;
+    };
+    window.history.replaceState = function(data, unused, url) {
+      const result = originalReplaceState.call(this, data, unused, url);
+      checkUrl();
+      return result;
+    };
+    window.addEventListener("popstate", checkUrl);
+    return () => {
+      window.history.pushState = originalPushState;
+      window.history.replaceState = originalReplaceState;
+      window.removeEventListener("popstate", checkUrl);
+    };
+  }
   function Tweaks() {
     usePageObserve();
+    reactExports.useEffect(() => {
+      return observeNavigation((url) => {
+        console.log("Navigation:", url.href);
+        if (_GM_getValue("sortOrder", false) && /\/c\/.*\/.*$/.test(url.pathname)) {
+          console.log("Matched!");
+          url.searchParams.set("order", "created");
+          window.history.replaceState(
+            window.history.state,
+            "",
+            url
+          );
+        }
+      });
+    }, []);
     return null;
   }
   const css = '@font-face{font-family:Skyquake;src:url(https://themadseventeen.github.io/better-forums-assets/fonts/symbols_skyquake_short.woff) format("woff");font-weight:400;font-style:normal;font-display:swap}.user-card .first-row .names span,.group-card .first-row .names span{font-family:Skyquake,Roboto,sans-serif}:root{--mainColor: #b2f591;--replyColor: #ffbe7e}.statshark-button{position:relative;padding-right:1em!important}.statshark-button:after{content:"open_in_new";font-family:Material Symbols Outlined;font-weight:400;font-style:normal;line-height:1;position:absolute;top:0!important;pointer-events:none;color:var(--topic-control-btn-text)}html.dark{--mainColor: #005e40;--replyColor: #422e1a}.current-user-post>article .row{background-color:var(--mainColor);border:2px solid var(--mainBorder)}.mark-reply>article .row{background-color:var(--replyColor);border:2px solid var(--replyBorder)}article .row .topic-body aside.quote.mark-quote{background-color:var(--replyColor);border-radius:6px;overflow:hidden;position:relative}article .row .topic-body a.mark-mention{transition:color ease .3s,fill ease .3s,background-color ease .3s}a.mention.mark-mention,a.mention-group{background:var(--replyColor)}';
@@ -12443,6 +12486,7 @@
     const [replyLight, setReplyLight] = reactExports.useState(() => _GM_getValue("replyColorLight"));
     const [replyDark, setReplyDark] = reactExports.useState(() => _GM_getValue("replyColorDark"));
     const [statshark, setStatshark] = reactExports.useState(() => _GM_getValue("statshark", false));
+    const [sortOrder, setSortOrder] = reactExports.useState(() => _GM_getValue("sortOrder", false));
     reactExports.useEffect(() => {
       setDarkMode(_GM_getValue("followTheme", false));
     }, []);
@@ -12459,6 +12503,7 @@
       _GM_setValue("followTheme", darkMode);
       syncTheme();
       _GM_setValue("removeButton", removeButton);
+      _GM_setValue("sortOrder", sortOrder);
       removePlayButton();
       _GM_setValue("mainColorLight", mainLight);
       _GM_setValue("mainColorDark", mainDark);
@@ -12513,6 +12558,18 @@ jsxRuntimeExports.jsx(
             ),
             " ",
             'Remove "PLAY" button'
+          ] }),
+jsxRuntimeExports.jsxs("label", { children: [
+jsxRuntimeExports.jsx(
+              "input",
+              {
+                type: "checkbox",
+                checked: sortOrder,
+                onChange: (e) => setSortOrder(e.target.checked)
+              }
+            ),
+            " ",
+            "Sort by date created"
           ] }),
 jsxRuntimeExports.jsxs("label", { children: [
 jsxRuntimeExports.jsx(
