@@ -16,6 +16,8 @@ function SettingsForm() {
 
     const [statshark, setStatshark] = useState(() => GM_getValue("statshark", false));
 
+    const [sortOrder, setSortOrder] = useState(() => GM_getValue("sortOrder", false));
+
     useEffect(() => {
         setDarkMode(GM_getValue("followTheme", false));
     }, []);
@@ -35,6 +37,7 @@ function SettingsForm() {
         syncTheme();
 
         GM_setValue("removeButton", removeButton);
+        GM_setValue("sortOrder", sortOrder);
         removePlayButton();
 
         GM_setValue("mainColorLight", mainLight);
@@ -85,6 +88,14 @@ function SettingsForm() {
                     onChange={e => setRemoveButton(e.target.checked)}
                 />{" "}
                 Remove "PLAY" button
+            </label>
+            <label>
+                <input
+                    type="checkbox"
+                    checked={sortOrder}
+                    onChange={e => setSortOrder(e.target.checked)}
+                />{" "}
+                Sort by date created
             </label>
             <label>
                 <input
