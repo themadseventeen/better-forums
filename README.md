@@ -16,5 +16,5 @@ User script containing improvements for War Thunder's official forums
 ## How to install
 
 1. Install a UserScript manager. I recommend [Violentmonkey](https://violentmonkey.github.io/)
-2. Add the extension from URL in your UserScript manager. Enter [this link](https://raw.githubusercontent.com/themadseventeen/better-forums/refs/heads/master/script.js)
+2. Add the extension from URL in your UserScript manager. Enter [this link](/better-forums/refs/heads/master/script.user.js)
 3. "Edit" the script and enable auto updates (optional)
