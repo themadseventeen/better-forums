@@ -27,7 +27,7 @@ export default defineConfig({
         version: '1.6.0'
       },
       build: {
-        fileName: 'script.js',
+        fileName: 'script.user.js',
       },
     }),
   ],

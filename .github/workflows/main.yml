@@ -19,10 +19,10 @@ jobs:
 
       - run: npm run build
 
-      - name: Commit compiled script.js
+      - name: Commit compiled script.user.js
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add script.js
+          git add script.user.js
           git commit -m "Build userscript" || echo "No changes"
           git push
